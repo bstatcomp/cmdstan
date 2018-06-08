@@ -80,6 +80,17 @@ CMDSTAN_VERSION := 2.17.1
 ##
 -include $(MATH)make/detect_os
 
+# If STAN_OPENCL is defined
+##
+# Adds the following to CXXFLAGS
+# link to OpenCL
+# Defines:
+#  STAN_OPENCL
+# OPENCL_DEVICE_ID - The ID of the GPU (default: 0)
+# OPENCL_PLATFORM_ID The ID of the OpenCL platform (default: 0)
+# Both IDs can be found through installing and calling clinfo
+-include make/setup_gpu
+
 include make/libstan  # libstan.a
 include make/models   # models
 include make/tests
