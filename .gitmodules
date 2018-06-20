@@ -1,0 +1,4 @@
+[submodule "stan"]
+	path = stan
+	url = https://github.com/bstatcomp/stan.git
+	branch = gp3_example
