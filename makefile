@@ -107,7 +107,7 @@ include make/command  # bin/stanc, bin/stansummary, bin/print, bin/diagnose
 	@echo ''
 	@echo '--- Linking C++ model ---'
 	@test -f $(dir $<)USER_HEADER.hpp || touch $(dir $<)USER_HEADER.hpp
-	$(LINK.cc) -O$O $(OUTPUT_OPTION) $(CMDSTAN_MAIN) -include $< -include $(dir $<)USER_HEADER.hpp $(LIBSUNDIALS)
+	$(LINK.cc) -O$O $(OUTPUT_OPTION) $(CMDSTAN_MAIN) -include $< -include $(dir $<)USER_HEADER.hpp $(LIBSUNDIALS) $(LDFLAGS_OPENCL)
 
 
 ##
@@ -253,7 +253,7 @@ endif
 	@echo '--------------------------------------------------------------------------------'
 
 .PHONY: build
-build: bin/stanc$(EXE) bin/stansummary$(EXE) bin/print$(EXE) bin/diagnose$(EXE) $(LIBCVODES)
+build: bin/stanc$(EXE) bin/stansummary$(EXE) bin/print$(EXE) bin/diagnose$(EXE) $(LIBSUNDIALS)
 	@echo ''
 	@echo '--- CmdStan v$(CMDSTAN_VERSION) built ---'
 
