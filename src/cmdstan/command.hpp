@@ -28,6 +28,7 @@
 #include <stan/services/sample/hmc_nuts_diag_e_adapt.hpp>
 #include <stan/services/sample/hmc_nuts_unit_e.hpp>
 #include <stan/services/sample/hmc_nuts_unit_e_adapt.hpp>
+#include <stan/services/sample/hmc_nuts_softabs_adapt.hpp>
 #include <stan/services/sample/hmc_static_dense_e.hpp>
 #include <stan/services/sample/hmc_static_dense_e_adapt.hpp>
 #include <stan/services/sample/hmc_static_diag_e.hpp>
@@ -449,31 +450,60 @@ namespace cmdstan {
           unsigned int init_buffer = dynamic_cast<u_int_argument*>(adapt->arg("init_buffer"))->value();
           unsigned int term_buffer = dynamic_cast<u_int_argument*>(adapt->arg("term_buffer"))->value();
           unsigned int window = dynamic_cast<u_int_argument*>(adapt->arg("window"))->value();
+#if 1
+          return_code = stan::services::sample::hmc_nuts_softabs_adapt(model,
+                                                                       *init_context,
+                                                                       random_seed,
+                                                                       id,
+                                                                       init_radius,
+                                                                       num_warmup,
+                                                                       num_samples,
+                                                                       num_thin,
+                                                                       save_warmup,
+                                                                       refresh,
+                                                                       stepsize,
+                                                                       stepsize_jitter,
+                                                                       max_depth,
+                                                                       delta,
+                                                                       gamma,
+                                                                       kappa,
+                                                                       t0,
+                                                                       init_buffer,
+                                                                       term_buffer,
+                                                                       window,
+                                                                       interrupt,
+                                                                       logger,
+                                                                       init_writer,
+                                                                       sample_writer,
+                                                                       diagnostic_writer);
+#else
           return_code = stan::services::sample::hmc_nuts_diag_e_adapt(model,
-                                                                      *init_context,
-                                                                      random_seed,
-                                                                      id,
-                                                                      init_radius,
-                                                                      num_warmup,
-                                                                      num_samples,
-                                                                      num_thin,
-                                                                      save_warmup,
-                                                                      refresh,
-                                                                      stepsize,
-                                                                      stepsize_jitter,
-                                                                      max_depth,
-                                                                      delta,
-                                                                      gamma,
-                                                                      kappa,
-                                                                      t0,
-                                                                      init_buffer,
-                                                                      term_buffer,
-                                                                      window,
-                                                                      interrupt,
-                                                                      logger,
-                                                                      init_writer,
-                                                                      sample_writer,
-                                                                      diagnostic_writer);
+                                                                       *init_context,
+                                                                       random_seed,
+                                                                       id,
+                                                                       init_radius,
+                                                                       num_warmup,
+                                                                       num_samples,
+                                                                       num_thin,
+                                                                       save_warmup,
+                                                                       refresh,
+                                                                       stepsize,
+                                                                       stepsize_jitter,
+                                                                       max_depth,
+                                                                       delta,
+                                                                       gamma,
+                                                                       kappa,
+                                                                       t0,
+                                                                       init_buffer,
+                                                                       term_buffer,
+                                                                       window,
+                                                                       interrupt,
+                                                                       logger,
+                                                                       init_writer,
+                                                                       sample_writer,
+                                                                       diagnostic_writer);
+
+#endif
         } else if (engine->value() == "nuts" && metric->value() == "diag_e" && adapt_engaged == true && metric_supplied == true) {
           categorical_argument* base = dynamic_cast<categorical_argument*>(algo->arg("hmc")->arg("engine")->arg("nuts"));
           int max_depth = dynamic_cast<int_argument*>(base->arg("max_depth"))->value();
