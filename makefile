@@ -43,7 +43,7 @@ ifneq ($(filter-out clean clean-% print-% help help-% manual stan-update/% stan-
 -include src/cmdstan/stanc.d
 endif
 
-CMDSTAN_VERSION := 2.19.0
+CMDSTAN_VERSION := 2.19.1
 
 .PHONY: help
 help:
@@ -154,6 +154,9 @@ build: bin/stanc$(EXE) bin/stansummary$(EXE) bin/print$(EXE) bin/diagnose$(EXE) 
 	@echo ''
 	@echo '--- CmdStan v$(CMDSTAN_VERSION) built ---'
 
+ifeq ($(CXX_TYPE),clang)
+build: $(STAN)src/stan/model/model_header.hpp.gch
+endif
 
 ##
 # Clean up.
