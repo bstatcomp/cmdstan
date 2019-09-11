@@ -7,6 +7,7 @@
 #include <cmdstan/arguments/arg_init.hpp>
 #include <cmdstan/arguments/arg_output.hpp>
 #include <cmdstan/arguments/arg_random.hpp>
+#include <cmdstan/arguments/arg_gpu.hpp>
 #include <cmdstan/write_model.hpp>
 #include <cmdstan/write_stan.hpp>
 #include <stan/callbacks/interrupt.hpp>
@@ -55,6 +56,13 @@
 #include <stan/math/prim/arr/functor/mpi_distributed_apply.hpp>
 #endif
 
+#define USE_CMDSTAN 1
+namespace stan {
+namespace math {
+int gpu_platform = -1;  
+int gpu_device = -1;
+}
+}
 
 // forward declaration for function defined in another translation unit
 stan::model::model_base& new_model(stan::io::var_context& data_context,
@@ -110,6 +118,7 @@ namespace cmdstan {
     valid_arguments.push_back(new arg_data());
     valid_arguments.push_back(new arg_init());
     valid_arguments.push_back(new arg_random());
+    valid_arguments.push_back(new arg_gpu());
     valid_arguments.push_back(new arg_output());
     argument_parser parser(valid_arguments);
     int err_code = parser.parse_args(argc, argv, info, err);
@@ -119,6 +128,11 @@ namespace cmdstan {
     }
     if (parser.help_printed())
       return err_code;
+    int_argument* gpu_device_arg = dynamic_cast<int_argument*>(parser.arg("gpu")->arg("device"));
+    stan::math::gpu_device = gpu_device_arg->value();
+
+    int_argument* gpu_platform_arg = dynamic_cast<int_argument*>(parser.arg("gpu")->arg("platform"));
+    stan::math::gpu_platform = gpu_platform_arg->value();
 
     int_argument* random_arg = dynamic_cast<int_argument*>(parser.arg("random")->arg("seed"));
     unsigned int random_seed;

@@ -1,3 +1,5 @@
+CXXFLAGS += -DUSE_CMDSTAN=1
+
 bin/cmdstan/%.o : src/cmdstan/%.cpp
 	@mkdir -p $(dir $@)
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
