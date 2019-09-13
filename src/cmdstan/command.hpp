@@ -56,13 +56,9 @@
 #include <stan/math/prim/arr/functor/mpi_distributed_apply.hpp>
 #endif
 
-#define USE_CMDSTAN 1
-namespace stan {
-namespace math {
-int gpu_platform = -1;  
-int gpu_device = -1;
-}
-}
+#ifdef STAN_OPENCL
+#include <stan/math/opencl/opencl_context.hpp>
+#endif
 
 // forward declaration for function defined in another translation unit
 stan::model::model_base& new_model(stan::io::var_context& data_context,
@@ -128,11 +124,8 @@ namespace cmdstan {
     }
     if (parser.help_printed())
       return err_code;
-    int_argument* gpu_device_arg = dynamic_cast<int_argument*>(parser.arg("gpu")->arg("device"));
-    stan::math::gpu_device = gpu_device_arg->value();
-
-    int_argument* gpu_platform_arg = dynamic_cast<int_argument*>(parser.arg("gpu")->arg("platform"));
-    stan::math::gpu_platform = gpu_platform_arg->value();
+    int_argument* gpu_enabled_arg = dynamic_cast<int_argument*>(parser.arg("gpu"));
+    stan::math::opencl_context.gpu_enabled(gpu_enabled_arg->value());
 
     int_argument* random_arg = dynamic_cast<int_argument*>(parser.arg("random")->arg("seed"));
     unsigned int random_seed;
