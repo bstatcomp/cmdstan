@@ -6,6 +6,7 @@
 #include <cmdstan/arguments/arg_num_warmup.hpp>
 #include <cmdstan/arguments/arg_save_warmup.hpp>
 #include <cmdstan/arguments/arg_thin.hpp>
+#include <cmdstan/arguments/arg_gpu.hpp>
 #include <cmdstan/arguments/arg_adapt.hpp>
 #include <cmdstan/arguments/arg_sample_algo.hpp>
 
@@ -23,6 +24,7 @@ namespace cmdstan {
       _subarguments.push_back(new arg_thin());
       _subarguments.push_back(new arg_adapt());
       _subarguments.push_back(new arg_sample_algo());
+      _subarguments.push_back(new arg_gpu());
     }
   };
 
