@@ -124,9 +124,10 @@ namespace cmdstan {
     }
     if (parser.help_printed())
       return err_code;
+    #ifdef STAN_OPENCL
     int_argument* gpu_enabled_arg = dynamic_cast<int_argument*>(parser.arg("gpu"));
     stan::math::opencl_context.gpu_enabled(gpu_enabled_arg->value());
-
+    #endif
     int_argument* random_arg = dynamic_cast<int_argument*>(parser.arg("random")->arg("seed"));
     unsigned int random_seed;
     if (random_arg->is_default()) {
