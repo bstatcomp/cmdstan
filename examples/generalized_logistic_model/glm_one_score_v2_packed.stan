@@ -132,7 +132,6 @@ parameters{
 
 model{
   real tgt = 0;
-  real target_debug = 0;
   tau1 ~ normal(0, 10);
   beta1 ~ normal(0, 10);
   beta_pbo1 ~ normal(0, 10);
@@ -165,8 +164,6 @@ model{
                   eta_pr1, eta_sr1, eta_ps1, eta_ss1, base_s1, base_r1);
 
   target += tgt;
-  target_debug = target();
-  print("target= ", target_debug);
 
 }
 
